@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CaseVault 📂
 
-## Getting Started
+**A secure, full-stack case study repository and gallery.**
 
-First, run the development server:
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?style=for-the-badge&logo=vercel) ]
+([https://first-full-stack-project-iota.vercel.app/])
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+CaseVault is a robust Next.js web application designed to securely ingest, store, and display academic and professional case studies. It features a custom API, strict cryptographic authentication, and optimized database queries to ensure scalability and high performance.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Key Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+* **Secure Authentication Gateway:** User session management utilizing Supabase Auth and JSON Web Tokens (JWT).
+* **Encrypted File Uploads:** Direct-to-bucket binary uploads for heavy PDF and Image files, bypassing server bottlenecks.
+* **Paginated Gallery:** Offset-based pagination executed at the PostgreSQL database layer (`LIMIT` & `OFFSET`) to minimize memory overhead.
+* **Real-time Multi-field Search:** In-memory client/server filtering across titles, descriptions, and metadata tags.
+* **Optimistic UI Deletions:** Zero-latency DOM mutations during record deletion, backed by asynchronous server rollbacks on failure.
+* **Strict Resource Protection:** API endpoints enforce IDOR (Insecure Direct Object Reference) protection, requiring exact cryptographic matches between the JWT subject and the database `user_id`.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠️ Technology Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Frontend Architecture**
+* **Framework:** Next.js (App Router)
+* **Library:** React
+* **Language:** TypeScript / JavaScript
+* **Styling:** Tailwind CSS
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Backend Infrastructure (BaaS)**
+* **Database:** PostgreSQL (via Supabase)
+* **Authentication:** Supabase Auth
+* **Object Storage:** Supabase Storage Buckets
+* **API:** Next.js Serverless Route Handlers
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📂 System Architecture
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The application enforces a strict separation of concerns between client-side rendering and server-side data mutations.
+
+```text
+case-vault/
+├── app/
+│   ├── layout.tsx         # Global UI wrapper & metadata
+│   ├── page.tsx           # Primary Gallery view (Client Component)
+│   ├── login/             # Authentication gateway
+│   ├── upload/            # Ingestion form & payload packager
+│   └── api/
+│       └── slides/
+│           └── route.js   # Secure API (GET, POST, DELETE handlers)
+├── public/                # Static visual assets
+└── .env.local             # Hidden cryptographic keys
